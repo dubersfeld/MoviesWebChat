@@ -47,6 +47,12 @@ source/production/resources/log4j2.xml: &lt;RollingFile name="WroxFileAppender" 
 
 where the folder /home/dominique should be replaced by a folder that matches your own file system.
 
+This project can be deployed on Tomcat with the context root: 
+
+localhost:8080/movies-web
+
+
+
 Note on authorities:
 
 I have predefined 5 authorities: VIEW, CREATE, UPDATE, DELETE, CHAT
@@ -70,4 +76,4 @@ Moreover any new user can register and be granted the only VIEW and CHAT authori
 Note that a given user is only allowed a single connection to a given chatroom, i.e. he cannot connect at the same time from two different IPs such as a desktop and a smartphone.
 
 
-Dominique Ubersfeld 
+Dominique Ubersfeld, Cachan, France 
