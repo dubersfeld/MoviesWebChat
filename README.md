@@ -2,54 +2,38 @@
 Spring based Web site with CrudRepository support and Spring Security , running on Tomcat 8 with Maven build with a WebSockets based chat room
 
 This is a demonstration project on Spring development. It involves:
-MySQL as a database with Spring CrudRepository support 
-Eclipse Mars with Maven plugin as an IDE
-Tomcat 8 as a container
+MySQL as a database server
+Maven as a build tool
 
 moviesDBChat.sql was used to generate the MySql database used in this project.
 
-This project can run on Tomcat 8 from Eclipse or on Tomcat 8 standalone from a .war file. It requires Java 8 Runtime Environment.
+When the project has started open a browser and hit URL `localhost:8080/movies-web`.
 
-This is the 5th version of this project. More stuff is coming soon with a version that implements a chat room.
 
-For the basic JDBC version of this project see the repository:
+# Connecting to a Chat Room
 
-https://github.com/dubersfeld/MoviesWebJDBC
+To get the ChatRoom list click on link `ViewChatRooms`. The response page should look like this:
+![alt text](images/chatRooms.png "Chat rooms")
 
-For the JPQL version of this project see the repository:
+Select a chat room. The response page should look like this:
+![alt text](images/connect.png "Connect")
 
-https://github.com/dubersfeld/MoviesWebJPQL
+Connect to chat room. The response page should look like this:
+![alt text](images/connected.png "Connected")
 
-For the Criteria version of this project see the repository:
+Send a message. The response page should look like this:
+![alt text](images/send.png "Send")
 
-https://github.com/dubersfeld/MoviesWebCriteria
+# Connecting as a different user
 
-For the CrudRepository version of this project see the repository:
+To connect as a different user you need to open a different browser to create a different session. Then the initial page should look like this:
+![alt text](images/joined.png "New user joined")
 
-https://github.com/dubersfeld/MoviesWebCrud
+After the new user sent a message the initial page should look like this:
+![alt text](images/receive.png "Message received")
 
-For the Spring Security version of this project see the repository:
-
-https://github.com/dubersfeld/MoviesWebSecurity
-
-For a full tutorial about this project please visit my personal site:
-
-http://www.dominique-ubersfeld.com/JAVADEV/SpringDevelopment.html
-
-As a reference book I mainly used Java for Web Applications by Nicholas S. Williams
-
-Note: this project was run on my home computer. To run it on your system you have to edit some files to customize them to your actual file system. They are:
-
-source/production/resources/install.properties: photoTempDir=/home/dominique/Pictures/tmp/
-
-source/production/resources/log4j2.xml: &lt;RollingFile name="WroxFileAppender" fileName="/home/dominique/logs/application.log"
-                                     filePattern="/home/dominique/logs/application-%d{MM-dd-yyyy}-%i.log"&gt;
-
-where the folder /home/dominique should be replaced by a folder that matches your own file system.
-
-This project can be deployed on Tomcat with the context root: 
-
-localhost:8080/movies-web
+Disconnect the new user. The initial page should look like this:
+![alt text](images/disconnect.png "New user disconnected")
 
 
 
@@ -75,5 +59,24 @@ Moreover any new user can register and be granted the only VIEW and CHAT authori
 
 Note that a given user is only allowed a single connection to a given chatroom, i.e. he cannot connect at the same time from two different IPs such as a desktop and a smartphone.
 
+For the basic JDBC version of this project see the repository:
+
+https://github.com/dubersfeld/MoviesWebJDBC
+
+For the JPQL version of this project see the repository:
+
+https://github.com/dubersfeld/MoviesWebJPQL
+
+For the Criteria version of this project see the repository:
+
+https://github.com/dubersfeld/MoviesWebCriteria
+
+For the CrudRepository version of this project see the repository:
+
+https://github.com/dubersfeld/MoviesWebCrud
+
+For the Spring Security version of this project see the repository:
+
+https://github.com/dubersfeld/MoviesWebSecurity
 
 Dominique Ubersfeld, Cachan, France 

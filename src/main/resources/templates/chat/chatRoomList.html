@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header(title='chatRoomList')">
+</head>
+<body>
+
+
+  <h1>Active chat rooms</h1>
+ 	 
+  <br/>	 
+  <table>
+    <tr th:each="chatroom : ${chatrooms}">
+      <td>
+     	<a th:href="@{'/chatRoom/join/' + ${chatroom.key}}" th:text="${chatroom.value.name}"></a>
+        <br/>
+      </td>
+    </tr>
+  </table>
+
+  		 	
+</body>
+</html>
+

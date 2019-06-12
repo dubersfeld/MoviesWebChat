@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   
+<title>Chat Room</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+ 
+	var stompClient = null;
+	var toto = true;
+            
+	var username = "" + /*[[${username}]]*/;        
+	var chatRoomId = "" + /*[[${chatRoomId}]]*/;         
+	var chatRoomUrl = "" + /*[[${chatRoomUrl}]]*/;
+                          
+	var subscribeURL = "/topic/messages/" + chatRoomId;        
+	var chatURL = "/app/chat/" + chatRoomId;
+                           
+	console.log("chatRoomUrl " + chatRoomUrl);
+	console.log("username " + username);
+	console.log("subscribeURL " + subscribeURL);
+	console.log("chatURL " + chatURL);       
+	        
+	function setConnected(connected) {     	
+		$("button[id='connect']").prop('disabled', connected);               
+		$("button[id='disconnect']").prop('disabled', !connected);        
+		$("#conversationDiv").css('visibility', connected ? 'visible' : 'hidden');                
+		$("#welcomeChat").html(connected ? "You are connected" : "Please connect");                             
+		$("#response").html("");        
+	}
+                     
+	function connect() {
+		var socket = new SockJS(chatRoomUrl);  
+		stompClient = Stomp.over(socket);
+   		console.log('Sator ' + chatRoomUrl);
+                
+   		stompClient.connect({}, function(frame) {
+    		setConnected(true);
+    		console.log('Connected');
+   			stompClient.subscribe(subscribeURL, function(messageOutput) {
+    			showMessageOutput(JSON.parse(messageOutput.body));
+    		});
+    		console.log('chatURL ' + chatURL);
+    	});
+	}
+             
+            function disconnect() {
+                if(stompClient != null) {
+                    stompClient.disconnect();
+                }
+                setConnected(false);
+                console.log("Disconnected");
+            }
+            
+             
+            function sendMessage() {
+            	var from = $("#from").get(0).value;
+                var text = $("#text").get(0).value;
+                console.log("from: " + from);
+                console.log("text: " + text);
+                console.log("chatURL: " + chatURL);
+                if (text.trim().length > 0) {
+                stompClient.send(chatURL, {}, 
+                  JSON.stringify({'from':from, 'text':text}));
+            	}
+            }
+             
+          
+            function showMessageOutput(messageOutput) {
+                var response = $("#response").get(0);
+                    
+                switch (messageOutput.code) {
+                	case 'JOINED':
+                	var msg = messageOutput.from + " " + /*[[#{chat.joined}]]*/
+                            + " (" + messageOutput.time + ")";
+                	$('<p></p>').text(msg).css("color", "Blue").appendTo(response);
+                	break;
+                	case 'LEFT':
+                	var msg = messageOutput.from + " " + /*[[#{chat.left}]]*/
+                    + " (" + messageOutput.time + ")";
+                	$('<p></p>').text(msg).css("color", "Green").appendTo(response);               
+                	break;
+                	case 'NORMAL':
+                	var msg = messageOutput.from + ": " 
+                        + messageOutput.text + " (" + messageOutput.time + ")";  
+                	$('<p></p>').text(msg).css("color", "Black").appendTo(response);
+                	
+                	break;
+                	default:
+                }
+            }
+            
+            
+</script>
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" th:href="@{/css/main.css}" />
+<link rel="stylesheet" th:href="@{/css/chat.css}" />  
+</head>
+
+
+<body onload="disconnect()">
+
+ 	<div th:replace="fragments/main::displayPost"></div>
+
+<h1 th:text="#{chatRoom} + ' ' + ${chatRoomName}"></h1>
+    
+    	<div sec:authorize="hasAuthority('CHAT')">   
+			<h1>
+			<span th:text="#{welcome} + ' '"></span>
+			<span sec:authentication="name"></span>
+  			</h1>
+  			<br />
+  			<p id="welcomeChat" th:text="#{chat.connect.please}"></p>			
+  			<br /><br />
+   		</div>
+    
+        <div sec:authorize="hasAuthority('CHAT')">  
+            <div>
+                <input type="hidden" id="from" th:value="${username}" />
+            </div>
+            <br />
+            <div>
+                <button id="connect" onclick="connect();"><span th:text="#{chat.connect}"></span></button>
+                <button id="disconnect" disabled="disabled" onclick="disconnect();">
+                    <span th:text="#{chat.disconnect}"></span>
+                </button>
+            </div>
+            <br />
+            <div id="conversationDiv">
+                <input type="text" id="text" th:placeholder="#{chat.write}"/>
+                <button id="sendMessage" onclick="sendMessage();"><span th:text="#{chat.send}"></span></button>
+                <p id="response"></p>
+            </div>
+        </div>
+        
+        <div th:replace="fragments/footer::footer"></div>
+    
+</body>
+</html>
