@@ -45,7 +45,8 @@ public class ChatRoomController
     
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Map<String, Object> model, HttpServletRequest request)
-    {	
+    {
+    	
     	Map<Long,ChatRoom> chatRooms = this.chatRoomService.getChatRooms();
     	
      	model.put("chatrooms", chatRooms);

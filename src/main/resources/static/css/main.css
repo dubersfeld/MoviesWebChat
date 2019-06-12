@@ -1,3 +1,4 @@
+@CHARSET "UTF-8";
 html, body {
     height: 90%;
     font-family: Verdana, Helvetica, Arial, sans-serif;
@@ -64,5 +65,5 @@ h3 {
 .errors {
 	font: 12px verdana, sans-serif;  
     color: red;
-    display: block;
+    display: inline-flex;
 }

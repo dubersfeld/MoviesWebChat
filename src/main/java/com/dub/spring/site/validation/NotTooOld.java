@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 @ReportAsSingleViolation
 public @interface NotTooOld
 {
-    String message() default "{com.dub.spring.site.validation.tooOld}";
+    String message() default "{com.dub.site.validation.tooOld}";
 
     Class<?>[] groups() default {};
 

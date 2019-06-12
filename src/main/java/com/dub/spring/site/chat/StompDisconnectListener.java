@@ -32,26 +32,22 @@ public class StompDisconnectListener implements ApplicationListener<SessionDisco
 		String time = new SimpleDateFormat("HH:mm").format(new Date());
 		
 		String sessionId = sha.getSessionId();
-		    
+		  
         for (ChatRoom chatRoom : chatRoomService.getChatRooms().values()) {// for each chat group
-       
         	Map<String, String> connectedUsers = chatRoom.getConnectedUsers();
-        	   	
+        	 	
         	// send disconnect notification to all chat group subscribers 
-        	 if (connectedUsers.containsKey(sessionId)) {
-        		 String username = connectedUsers.get(sessionId);
-        		 OutputMessage discMessage 
+        	if (connectedUsers.containsKey(sessionId)) {
+        		String username = connectedUsers.get(sessionId);
+        		OutputMessage discMessage 
         		 			= new OutputMessage(username, "", time, OutputMessage.Code.LEFT );
         	       
-        		 // remove subscriber username
-        		 connectedUsers.remove(sessionId);
-        		 //chatRoom.display();
+        		// remove subscriber username
+        		connectedUsers.remove(sessionId);
+        		//chatRoom.display();
         		 
-        		 template.convertAndSend("/topic/messages/" + chatRoom.getChatRoomId(), discMessage);
-        		 
-        	 } 
+        		template.convertAndSend("/topic/messages/" + chatRoom.getChatRoomId(), discMessage);   	 
+        	} 
         }
-       
-        
 	}
 }

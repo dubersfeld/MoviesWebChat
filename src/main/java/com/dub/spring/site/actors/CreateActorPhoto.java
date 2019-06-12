@@ -2,7 +2,6 @@ package com.dub.spring.site.actors;
 
 
 /* Command object */
-
 public class CreateActorPhoto {   
 	private String imageFile;
 	private long actorId;
@@ -21,4 +20,4 @@ public class CreateActorPhoto {
 		this.actorId = actorId;
 	}
 	
-}
+}// class

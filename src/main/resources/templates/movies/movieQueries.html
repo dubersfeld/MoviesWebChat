@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments/header::header(title='movieQueries')">
 </head>
@@ -9,16 +9,24 @@
  	
  	<a th:href="@{/backHome}" th:text="#{index.backHome}"></a><br /><br />
  	 
- 	<a th:href="@{/allMovies}" th:text="#{movieQueries.listAllMovies}"></a><br/>
-	<a th:href="@{/numberOfMovies}" th:text="#{movieQueries.numberOfMovies}"></a><br/>
-	<a th:href="@{/getMovie}" th:text="#{movieQueries.getMovie}"></a><br/>
-	<a th:href="@{/getSingleMovie}" th:text="#{movieQueries.getSingleMovie}"></a><br/>
-
-	<a th:href="@{/createMovie}" th:text="#{movieQueries.createMovie}"></a><br/>
-
-	<a th:href="@{/deleteMovie}" th:text="#{movieQueries.deleteMovie}"></a><br/>
-
-	<a th:href="@{/updateMovie}" th:text="#{movieQueries.updateMovie}"></a><br/>
+ 	<div sec:authorize="hasAuthority('VIEW')">
+ 		<a th:href="@{/allMovies}" th:text="#{movieQueries.listAllMovies}"></a><br/>
+		<a th:href="@{/numberOfMovies}" th:text="#{movieQueries.numberOfMovies}"></a><br/>
+		<a th:href="@{/getMovie}" th:text="#{movieQueries.getMovie}"></a><br/>
+		<a th:href="@{/getSingleMovie}" th:text="#{movieQueries.getSingleMovie}"></a><br/>
+	</div>
+	
+	<div sec:authorize="hasAuthority('CREATE')">
+		<a th:href="@{/createMovie}" th:text="#{movieQueries.createMovie}"></a><br/>
+	</div>
+		 	
+	<div sec:authorize="hasAuthority('DELETE')">
+		<a th:href="@{/deleteMovie}" th:text="#{movieQueries.deleteMovie}"></a><br/>
+	</div>
+		 	
+	<div sec:authorize="hasAuthority('UPDATE')">
+		<a th:href="@{/updateMovie}" th:text="#{movieQueries.updateMovie}"></a><br/>
+ 	</div>
  	
 </body>
 </html>

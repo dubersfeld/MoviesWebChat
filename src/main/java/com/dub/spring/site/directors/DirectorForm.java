@@ -50,5 +50,4 @@ public class DirectorForm {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	
 }

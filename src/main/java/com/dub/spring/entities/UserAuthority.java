@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class UserAuthority implements GrantedAuthority
 {
-	/**
+    /**
 	 * 
 	 */
 	//private static final long serialVersionUID = 1L;

@@ -1,14 +1,12 @@
 package com.dub.spring.entities;
 
 
-public class ActorWithPhoto extends Actor {   
-
-	/**
-	 * 
-	 */
+public class ActorWithPhoto extends Actor 
+{   
 	private static final long serialVersionUID = 1L;
 	private long photoId;
 	private boolean photoAvailable;
+	
 	
 	public ActorWithPhoto() {
 	}
@@ -28,7 +26,7 @@ public class ActorWithPhoto extends Actor {
 	public void setPhotoId(long photoId) {
 		this.photoId = photoId;
 	}
-
+	
 	public boolean isPhotoAvailable() {
 		return photoAvailable;
 	}
@@ -36,4 +34,5 @@ public class ActorWithPhoto extends Actor {
 	public void setPhotoAvailable(boolean photoAvailable) {
 		this.photoAvailable = photoAvailable;
 	}
+	
 }

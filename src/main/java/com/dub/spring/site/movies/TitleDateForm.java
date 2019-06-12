@@ -17,7 +17,7 @@ public class TitleDateForm {
 	@Size(min = 1, message = "{validate.title.required}")
 	protected String title;
 	
-	@NotTooOld(message = "{validate.releaseDate.remote}")
+	//@NotTooOld(message = "{validate.releaseDate.remote}")
 	@DateTimeFormat(pattern="yyyy/MM/dd")
 	@NotNull(message = "{validate.releaseDate.required}")
 	protected Date releaseDate;

@@ -1,7 +1,6 @@
 package com.dub.spring.site;
 
 import java.util.Map;
-import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +9,6 @@ import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -24,39 +22,36 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.dub.spring.entities.UserPrincipal;
  
 @Controller
-public class AuthenticationController {
+public class AuthenticationController 
+{     
 	
 	@Autowired
 	SessionRegistry sessionRegistry;
-		
+	
+
     @RequestMapping(
     		value = { "/", "/backHome" }, 
     		method = RequestMethod.GET)
-    public String homePage(ModelMap model) 
-    {
-        model.addAttribute("user", SecurityUtils.getPrincipal());
-    
+    public String homePage(ModelMap model) {
+        model.addAttribute("user", SecurityUtils.getPrincipal());        
         return "index";
     }
         
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(Map<String, Object> model, HttpServletRequest request)
-    {	
+    {
     	if(SecurityContextHolder.getContext().getAuthentication() instanceof
                  UserPrincipal)
              return new ModelAndView(new RedirectView("/index", true, false));
  		
         model.put("loginForm", new LoginForm());
         model.put("number", sessionRegistry.getAllPrincipals().size());
-        model.put("users", sessionRegistry.getAllPrincipals());
-    
-        SecurityContextHolder.getContext();
+        model.put("users", sessionRegistry.getAllPrincipals());                    
         return new ModelAndView("login");
     }
 
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-    
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) { 
             new SecurityContextLogoutHandler().logout(request, response, auth);
@@ -83,7 +78,7 @@ public class AuthenticationController {
         }
 
         public String getUsername()
-        {
+        {       	
             return username;
         }
 

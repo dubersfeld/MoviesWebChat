@@ -9,19 +9,18 @@ import javax.validation.constraints.NotNull;
 
 public class UpdateMovieForm {
 	
-	private Integer id;
+	private long id;
 	private String title;	
 	protected Date releaseDate;
 	
 	@NotNull(message = "{validate.directorId.required}")
 	@Min(value  = 1, message = "{validate.min.directorId}")
-	protected Integer directorId;
+	protected long directorId;
 	
 	@NotNull(message = "{validate.runningTime.required}")
-	protected Integer runningTime;
+	protected int runningTime;
 	
 	
- 
 	public String getTitle() {
 		return title;
 	}
@@ -38,27 +37,27 @@ public class UpdateMovieForm {
 	}
 		  
 	
-	public Integer getDirectorId() {
+	public long getDirectorId() {
 		return directorId;
 	}
-	public void setDirectorId(Integer directorId) {
+	public void setDirectorId(long directorId) {
 		this.directorId = directorId;
 	}
 	
 	
-	public Integer getRunningTime() {
+	public int getRunningTime() {
 		return runningTime;
 	}
-	public void setRunningTime(Integer runningTime) {
+	public void setRunningTime(int runningTime) {
 		this.runningTime = runningTime;
 	}
 	
 	
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	

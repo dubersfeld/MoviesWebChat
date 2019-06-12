@@ -9,13 +9,13 @@ public class DirectorIdForm {
 
 	@Min(value  = 1, message = "{validate.min.directorId}")
 	@NotNull(message = "{validate.required.directorId}")
-	Integer id;
+	long id;
 
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	

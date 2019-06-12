@@ -6,20 +6,15 @@ import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import com.dub.spring.entities.Actor;
-import com.dub.spring.entities.ActorPhoto;
 import com.dub.spring.site.actors.CreateActorPhoto;
 
 @PreAuthorize("hasAuthority('VIEW')")
 public interface ActorServices {
-	
+
 	List<Actor> getAllActors();
 	
-	Actor getActor(long id);
-	
+	Actor getActor(long id);	
 	Actor getActor(String firstName, String lastName);
-	
-	long numberOfActors();
 	
 	@PreAuthorize("hasAuthority('DELETE')")
 	void deleteActor(long id);
@@ -30,7 +25,8 @@ public interface ActorServices {
 	@PreAuthorize("hasAuthority('UPDATE')")
 	void updateActor(Actor actor);
 	
-
+	long numberOfActors();
+	
 	@PreAuthorize("hasAuthority('CREATE')")
 	void createActorPhoto(CreateActorPhoto photo) 
 			throws FileNotFoundException, IOException;
@@ -43,8 +39,8 @@ public interface ActorServices {
 	long getPhotoId(Actor actor);
 	
 	List<Long> getAllPhotoIds(Actor actor);
-		
+	
 	@PreAuthorize("hasAuthority('DELETE')")
 	void deletePhoto(long id);
-
+			
 }

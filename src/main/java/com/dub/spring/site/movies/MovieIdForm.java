@@ -1,3 +1,4 @@
+
 package com.dub.spring.site.movies;
 
 import javax.validation.constraints.Min;
@@ -9,13 +10,13 @@ public class MovieIdForm {
 
 	@Min(value  = 1, message = "{validate.min.movieId}")
 	@NotNull(message = "{validate.required.movieId}")
-	Integer id;
+	long id;
 
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	

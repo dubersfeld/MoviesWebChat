@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dub.spring.movies.MovieServices;
-import com.dub.spring.entities.DisplayMovie;
-import com.dub.spring.entities.Movie;
 import com.dub.spring.exceptions.DirectorNotFoundException;
 import com.dub.spring.exceptions.DuplicateMovieException;
 import com.dub.spring.exceptions.MovieNotFoundException;
+import com.dub.spring.movies.DisplayMovie;
+import com.dub.spring.movies.Movie;
+import com.dub.spring.movies.MovieServices;
 
 
 @Controller
@@ -40,41 +40,41 @@ public class MovieController {
 	protected void initBinder(WebDataBinder binder) {
 	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");		
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-	}// initBinder
+	}
 	
-		
-	@RequestMapping(value = "movieQueries", method = RequestMethod.GET)
+
+	
+	@RequestMapping(value = "/movieQueries", method = RequestMethod.GET)
 	public String movieQueries() {
 		return "movies/movieQueries";
 	}
 	
-	@RequestMapping(value = "listAllMovies", method = RequestMethod.GET)
+	@RequestMapping(value = "/allMovies", method = RequestMethod.GET)
 	public String listAllMoviesWithDirName(Map<String, Object> model) {
-		
+				
 		List<DisplayMovie> list = movieServices.getAllMovies();
 		
         model.put("movies", list);
         return "movies/listMovies";
-	}// listAllMovies
+	}
 		
-	@RequestMapping(value = "numberOfMovies", method = RequestMethod.GET)
+	@RequestMapping(value = "/numberOfMovies", method = RequestMethod.GET)
 	public String numberOfMovies(Map<String, Object> model) {		
-		Long number = movieServices.numberOfMovies();
+		long number = movieServices.numberOfMovies();
 		model.put("number", number);
 		return "movies/numberOfMovies";
-	}// numberOfMovies
+	}
 	
-	@RequestMapping(value = "getMovie", method = RequestMethod.GET)
+	@RequestMapping(value = "/getMovie", method = RequestMethod.GET)
 	public ModelAndView getMovie(ModelMap model) {
 		model.addAttribute("getMovie", new TitleForm());
 		return new ModelAndView("movies/getMovie", model);
 	}
 	
-	@RequestMapping(value = "getMovie", method = RequestMethod.POST)
+	@RequestMapping(value = "/getMovie", method = RequestMethod.POST)
 	public String getMovie(
 			@Valid @ModelAttribute("getMovie") TitleForm form,
-			BindingResult result, ModelMap model) {
-		
+			BindingResult result, ModelMap model) { 		
 		if (result.hasErrors()) {
 			return "movies/getMovie";
 		} else {
@@ -83,52 +83,52 @@ public class MovieController {
 			if (list.size() > 0) {
 				model.put("movies", list);
 				return "movies/getMovieResult";
-			} else { 
-				model.addAttribute("backPage", "getMovie");
-				return "movies/getMovieNoResult";			
-			}// if
-		}// if
-	}// getMovie
+			} else {
+				model.addAttribute("backPage", "getMovie");			
+				return "movies/getMovieNoResult";
+			}
+		}
+	}
 	
-	@RequestMapping(value = "getSingleMovie", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/getSingleMovie", method = RequestMethod.GET)
 	public ModelAndView getSingleMovie(ModelMap model) {
 		model.addAttribute("movieKey", new TitleDateForm());
 		return new ModelAndView("movies/getSingleMovie", model);
 	}
 	
-	@RequestMapping(value = "getSingleMovie", method = RequestMethod.POST)
+	@RequestMapping(value = "/getSingleMovie", method = RequestMethod.POST)
 	public String getSingleMovie(
 			@Valid @ModelAttribute("movieKey") TitleDateForm form,
 			BindingResult result, ModelMap model) {
+		
 		if (result.hasErrors()) {
 			return "movies/getSingleMovie";
-		} else {	
+		} else {			
 			try {
 				DisplayMovie displayMovie = movieServices.getMovie(
-								form.getTitle(), form.getReleaseDate());												
+								form.getTitle(), form.getReleaseDate());		
 				model.put("movie", displayMovie);
-				return "movies/getSingleMovieResult";		
-			} catch (MovieNotFoundException e) {
-				model.addAttribute("backPage", "getSingleMovie");
-				return "movies/getMovieNoResult";	
-			} catch (RuntimeException e) {
-				return "error";
-			}	
+				return "movies/getSingleMovieResult";
+			} catch (MovieNotFoundException e) {		
+				model.addAttribute("backPage", "getSingleMovie");			
+				return "movies/getMovieNoResult";
+			} 
 		}
-	}// getMovie
+	}
 	
-	@RequestMapping(value = "createMovie", method = RequestMethod.GET)
+	@RequestMapping(value = "/createMovie", method = RequestMethod.GET)
 	public ModelAndView createMovie(ModelMap model) {
 		model.addAttribute("movie", new MovieForm());
 		return new ModelAndView("movies/createMovie", model);
 	}
 
-	@RequestMapping(value = "createMovie", method = RequestMethod.POST)
+	@RequestMapping(value = "/createMovie", method = RequestMethod.POST)
 	public String createMovie(
 						@Valid @ModelAttribute("movie") MovieForm form,
 						BindingResult result, ModelMap model) {
-	
-		if (result.hasErrors()) {			
+		
+		if (result.hasErrors()) {
 			return "movies/createMovie";
 		} else {
 			try {
@@ -138,7 +138,8 @@ public class MovieController {
 				movie.setRunningTime(form.getRunningTime());
 				movie.setTitle(form.getTitle());
 				movieServices.createMovie(movie);
-				return "movies/createMovieSuccess";		
+				model.addAttribute("movie", movie);
+				return "movies/createMovieSuccess";
 			} catch (DuplicateMovieException e) {
 				result.rejectValue("title", "duplicate", 
 						"film already present");
@@ -147,18 +148,17 @@ public class MovieController {
 				result.rejectValue("directorId", "notFound", 
 						"director not found");
 				return "movies/createMovie";
-			}// try
-						
-		}// if
-	}// createMovie
+			}		
+		}
+	}
 	
-	@RequestMapping(value = "deleteMovie", method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteMovie", method = RequestMethod.GET)
 	public ModelAndView deleteMovie(ModelMap model) {
 		model.addAttribute("movieId", new MovieIdForm());
 		return new ModelAndView("movies/deleteMovie", model);
-	}// deleteMovie
+	}
 	
-	@RequestMapping(value = "deleteMovie", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteMovie", method = RequestMethod.POST)
 	public String deleteMovie(
 						@Valid @ModelAttribute("movieId") MovieIdForm form,
 						BindingResult result, ModelMap model) {
@@ -166,27 +166,24 @@ public class MovieController {
 		if (result.hasErrors()) {
 			return "movies/deleteMovie";
 		} else {
-			try {
-				Integer id = form.getId();			
+			try {			
+				long id = form.getId();
 				movieServices.deleteMovie(id);			
-				return "movies/deleteMovieSuccess";
+				return "movies/deleteMovieSuccess";	
 			} catch (MovieNotFoundException e) {
-				result.rejectValue("id", "notFound", "movie not found");				
-				return "movies/deleteMovie";								
-			} catch (RuntimeException e) {
-				return "error";
-			}// try			
-		}// if
-	}// deleteMovie
+				result.rejectValue("id", "notFound", "movie not found");		
+				return "movies/deleteMovie";
+			} 
+		}
+	}
 	
-	
-	@RequestMapping(value = "updateMovie", method = RequestMethod.GET)
+	@RequestMapping(value = "/updateMovie", method = RequestMethod.GET)
 	public ModelAndView updateMovie(ModelMap model) {
 		model.addAttribute("movieId", new MovieIdForm());
 		return new ModelAndView("movies/updateMovie1", model);
 	}
 	
-	@RequestMapping(value = "updateMovie1", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateMovie1", method = RequestMethod.POST)
 	public String updateMovie(
 			@Valid @ModelAttribute("movieId") MovieIdForm form,
 			BindingResult result, ModelMap model) {
@@ -194,20 +191,18 @@ public class MovieController {
 		if (result.hasErrors()) {
 			return "movies/updateMovie1";
 		} else {
-			try { 
+			try {
 				Movie movie = movieServices.getMovie(form.getId());
-				model.addAttribute("movie", movie);									
-				return "movies/updateMovie2";
-			} catch (MovieNotFoundException e) {
-				result.rejectValue("id", "notFound", "movie not found");									
-				return "movies/updateMovie1";
-			} catch (RuntimeException e) {
-				return "error";
-			}			
-		}// if		 
-	}// updateMovie
+				model.addAttribute("movie", movie);
+				return "movies/updateMovie2";						
+			} catch (MovieNotFoundException e) {			
+				result.rejectValue("id", "notFound", "movie not found");
+				return "movies/updateMovie1";		
+			}
+		}	 
+	}
 	
-	@RequestMapping(value = "updateMovie2", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateMovie2", method = RequestMethod.POST)
 	public String updateMovie2(
 			@Valid @ModelAttribute("movie") UpdateMovieForm form,
 			BindingResult result, ModelMap model) {
@@ -226,10 +221,9 @@ public class MovieController {
 				return "movies/updateMovieSuccess";
 			} catch (DirectorNotFoundException e) {
 				result.rejectValue("directorId", "notFound", 
-								"director not found");
-				return "movies/updateMovie2";	
-			} 
-		}// if		 
-	}// updateMovie		
-	
-}// class
+									"director not found");
+				return "movies/updateMovie2";
+			}
+		}	 
+	}		
+}

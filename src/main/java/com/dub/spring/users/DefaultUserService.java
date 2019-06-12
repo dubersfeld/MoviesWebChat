@@ -32,8 +32,8 @@ public class DefaultUserService implements UserService
 
     private static final int HASHING_ROUNDS = 10;
 
-    @Autowired 
-    private UserRepository userRepository;
+    @Autowired private 
+    UserRepository userRepository;
 
     @Override
     @Transactional
@@ -65,8 +65,7 @@ public class DefaultUserService implements UserService
 				throw new DuplicateUserException();
 			} else {
 				throw e;
-			}
-        	
+			}      	
         }
     }
 }

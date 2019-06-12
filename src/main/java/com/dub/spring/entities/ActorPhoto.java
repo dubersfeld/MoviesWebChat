@@ -47,4 +47,4 @@ public class ActorPhoto {
 		this.imageData = imageData;
 	}
 	
-}
+}// class

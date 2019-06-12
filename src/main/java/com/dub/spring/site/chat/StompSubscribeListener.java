@@ -35,7 +35,6 @@ public class StompSubscribeListener
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(event.getMessage());
  
         String username =  sha.getUser().getName();
-         
         String destination = sha.getDestination();
          
         String time = new SimpleDateFormat("HH:mm").format(new Date());

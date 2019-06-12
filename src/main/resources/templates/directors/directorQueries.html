@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments/header::header(title='directorQueries')">
 </head>
@@ -7,17 +7,25 @@
  
     <nav th:replace="fragments/header::language"></nav>
 	
-	<a th:href="@{/backHome}" th:text="#{index.backHome}"></a><br /><br />
-    <a th:href="@{/allDirectors}" th:text="#{directorQueries.listAllDirectors}"></a><br />
-    <a th:href="@{/getDirector}" th:text="#{directorQueries.getDirector}"></a><br />
-    <a th:href="@{/numberOfDirectors}" th:text="#{directorQueries.numberOfDirectors}"></a><br />
-    <a th:href="@{/getDirectorByName}" th:text="#{directorQueries.getDirectorByName}"></a><br />
-
- 	<a th:href="@{/createDirector}" th:text="#{directorQueries.createDirector}"></a><br />
-
-    <a th:href="@{/updateDirector}" th:text="#{directorQueries.updateDirector}"></a><br />
+	<div sec:authorize="hasAuthority('VIEW')">
+		<a th:href="@{/backHome}" th:text="#{index.backHome}"></a><br /><br />
+    	<a th:href="@{/allDirectors}" th:text="#{directorQueries.listAllDirectors}"></a><br />
+    	<a th:href="@{/getDirector}" th:text="#{directorQueries.getDirector}"></a><br />
+    	<a th:href="@{/numberOfDirectors}" th:text="#{directorQueries.numberOfDirectors}"></a><br />
+    	<a th:href="@{/getDirectorByName}" th:text="#{directorQueries.getDirectorByName}"></a><br />
+    </div>
+    
+    <div sec:authorize="hasAuthority('CREATE')">
+ 		<a th:href="@{/createDirector}" th:text="#{directorQueries.createDirector}"></a><br />
+    </div>
+      	
+    <div sec:authorize="hasAuthority('UPDATE')">
+    	<a th:href="@{/updateDirector}" th:text="#{directorQueries.updateDirector}"></a><br />
+  	</div>
   	
-  	<a th:href="@{/deleteDirector}" th:text="#{directorQueries.deleteDirector}"></a><br />
+  	<div sec:authorize="hasAuthority('DELETE')"-->
+  		<a th:href="@{/deleteDirector}" th:text="#{directorQueries.deleteDirector}"></a><br />
+  	</div>
   		 	
 </body>
 </html>

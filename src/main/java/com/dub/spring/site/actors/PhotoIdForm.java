@@ -9,16 +9,14 @@ public class PhotoIdForm {
 
 	@Min(value  = 1, message = "{validate.min.photoId}")
 	@NotNull(message = "{validate.required.photoId}")
-	Integer id;
+	long id;
 
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
-	
-	
 	
 }

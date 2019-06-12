@@ -97,4 +97,4 @@ public class Movie implements Serializable {
 		this.directorId = directorId;
 	}
 	
-}
+}// class

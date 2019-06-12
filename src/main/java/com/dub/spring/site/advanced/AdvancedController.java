@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dub.spring.actors.Actor;
 import com.dub.spring.advanced.AdvancedServices;
-
-import com.dub.spring.entities.Actor;
-import com.dub.spring.entities.Director;
-import com.dub.spring.entities.DisplayMovie;
+import com.dub.spring.directors.Director;
+import com.dub.spring.movies.DisplayMovie;
 import com.dub.spring.site.NameForm;
-import com.dub.spring.site.actors.ActorMovieForm;
 import com.dub.spring.exceptions.ActorNotFoundException;
+import com.dub.spring.exceptions.DuplicateActorException;
 import com.dub.spring.exceptions.DuplicateEntryException;
 import com.dub.spring.exceptions.MovieNotFoundException;
 import com.dub.spring.site.movies.TitleDateForm;
-import com.dub.spring.exceptions.DuplicateActorException;
+import com.dub.spring.site.advanced.ActorMovieTransForm;
+
 
 
 @Controller
@@ -38,27 +38,27 @@ public class AdvancedController {
 	
 	@Resource
 	private AdvancedServices advancedServices;
-	
 		
+
 	@InitBinder({"movieKey", "actorMovieTrans"})	  
 	protected void initMovieActorsBinder(WebDataBinder binder) {
 	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");		
 	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 	
-
-	@RequestMapping(value = "advancedQueries", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/advancedQueries", method = RequestMethod.GET)
 	public String advancedQueries() {
 		return "advanced/advancedQueries";
 	}
 	
-	@RequestMapping(value = "actorMovies", method = RequestMethod.GET)
+	@RequestMapping(value = "/actorMovies", method = RequestMethod.GET)
 	public ModelAndView getActorMovies(ModelMap model) {
 		model.addAttribute("actorName", new NameForm());
 		return new ModelAndView("advanced/actorMovies", model);
 	}
 	
-	@RequestMapping(value = "actorMovies", method = RequestMethod.POST)
+	@RequestMapping(value = "/actorMovies", method = RequestMethod.POST)
 	public String getActorMovies(
 				@Valid @ModelAttribute("actorName") NameForm form,
 				BindingResult result, ModelMap model) {
@@ -74,11 +74,12 @@ public class AdvancedController {
 			model.put("lastName", lastName); 
 			if (movies.size() > 0) {					
 				model.put("movies", movies);
-				return "advanced/actorMoviesSuccess";					
+				return "advanced/actorMoviesResult";					
 			} else {
-				return "advanced/actorMoviesNoResults";	
+				model.put("backPage", "actorMovies");
+				return "advanced/actorMoviesNoResult";	
 			}
-		}// if
+		}
 	}
 	
 	@RequestMapping(value = "movieActors", method = RequestMethod.GET)
@@ -103,15 +104,16 @@ public class AdvancedController {
 			model.put("releaseDate", releaseDate);
 			if (actors.size() > 0) {
 				model.put("actors", actors);
-				return "advanced/movieActorsSuccess";			
+				return "advanced/movieActorsResult";			
 			} else {
-				return "advanced/movieActorsNoResults";		
+				model.put("backPage", "movieActors");
+				return "advanced/movieActorsNoResult";		
 			}
 		}
 	}
 	
 	@RequestMapping(value = "directorMovies", method = RequestMethod.GET)
-	public ModelAndView getDirectorMovies(ModelMap model) {	
+	public ModelAndView getDirectorMovies(ModelMap model) {
 		model.addAttribute("directorName", new NameForm());
 		return new ModelAndView("advanced/directorMovies", model);
 	}
@@ -132,11 +134,12 @@ public class AdvancedController {
 			model.put("lastName", lastName); 
 			if (movies.size() > 0) {					
 				model.put("movies", movies);
-				return "advanced/directorMoviesSuccess";					
+				return "advanced/directorMoviesResult";					
 			} else {
-				return "advanced/directorMoviesNoResults";	
+				model.put("backPage", "directorMovies");
+				return "advanced/directorMoviesNoResult";	
 			}
-		}// if
+		}
 	}
 	
 	@RequestMapping(value = "directorActors", method = RequestMethod.GET)
@@ -161,11 +164,12 @@ public class AdvancedController {
 			model.put("lastName", lastName); 
 			if (actors.size() > 0) {					
 				model.put("actors", actors);
-				return "advanced/directorActorsSuccess";					
+				return "advanced/directorActorsResult";					
 			} else {
-				return "advanced/directorActorsNoResults";	
+				model.put("backPage", "directorActors");
+				return "advanced/directorActorsNoResult";	
 			}
-		}// if
+		}
 	}
 	
 	@RequestMapping(value = "actorDirectors", method = RequestMethod.GET)
@@ -190,11 +194,12 @@ public class AdvancedController {
 			model.put("lastName", lastName); 
 			if (directors.size() > 0) {					
 				model.put("directors", directors);				
-				return "advanced/actorDirectorsSuccess";					
+				return "advanced/actorDirectorsResult";					
 			} else {
-				return "advanced/actorDirectorsNoResults";	
+				model.put("backPage", "actorDirectors");
+				return "advanced/actorDirectorsNoResult";	
 			}
-		}// if
+		}
 	}
 	
 	@RequestMapping(value = "createActorMovie", method = RequestMethod.GET)
@@ -206,7 +211,7 @@ public class AdvancedController {
 	
 	@RequestMapping(value = "createActorMovie", method = RequestMethod.POST)
 	public String createActorMovie(
-						@Valid @ModelAttribute("actorMovie") ActorMovieForm actorMovie,
+						@Valid @ModelAttribute("actorMovie") ActorMovieForm form,
 						BindingResult result, ModelMap model) {
 		
 		if (result.hasErrors()) {
@@ -214,9 +219,9 @@ public class AdvancedController {
 		} else {		
 			try {
 				advancedServices.createActorFilm(
-										actorMovie.getActorId(), 
-										actorMovie.getMovieId());
-				return "advanced/createActorMovieSuccess";
+										form.getActorId(), 
+										form.getMovieId());
+				return "advanced/createActorMovieSuccess";			
 			} catch (DuplicateEntryException e) {
 				result.rejectValue("movieId", "duplicate", "entry already present");
 				return "advanced/createActorMovie";
@@ -226,11 +231,9 @@ public class AdvancedController {
 			} catch (MovieNotFoundException e) {
 				result.rejectValue("movieId", "notFound", "film not found");
 				return "advanced/createActorMovie";
-			} catch(RuntimeException e) {
-				return "error";
-			}// try
+			} 
 		}		
-	}// addActor
+	}
 	
 	@RequestMapping(value = "createActorMovieTrans", method = RequestMethod.GET)
 	public ModelAndView createActorMovieTrans(ModelMap model) {
@@ -245,27 +248,25 @@ public class AdvancedController {
 	{
 		if (result.hasErrors()) {
 			return "advanced/createActorMovieTrans";
-		} else {			
+		} else {	
 			Actor actor = new Actor();
 			actor.setFirstName(form.getFirstName());
 			actor.setLastName(form.getLastName());
-			actor.setBirthDate(form.getBirthDate());	
+			actor.setBirthDate(form.getBirthDate());		
 			try {
 				advancedServices.createActorFilmSpecial(
 											actor, 
 											form.getTitle(), 
-											form.getReleaseDate());			
+											form.getReleaseDate());
 				return "advanced/createActorMovieTransSuccess";
 			} catch (MovieNotFoundException e) {
 				result.rejectValue("title", "notFound", "movie not found");						
-				return "advanced/createActorMovieTrans";
+				return "advanced/createActorMovieTrans";			
 			} catch (DuplicateActorException e) {
 				result.rejectValue("firstName", "duplicate", "actor already present");						
 				return "advanced/createActorMovieTrans";
-			} catch (RuntimeException e) {
-				return "errors";
-			}// try
+			} 
 		}
 	}
 	
-}// class
+}

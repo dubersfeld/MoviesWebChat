@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
 <head th:replace="fragments/header::header(title='advancedQueries')">
@@ -10,14 +10,18 @@
 	
 	<a href="backHome" th:text="#{index.backHome}"></a><br /><br />
 
- 	<a href="actorMovies" th:text="#{advancedQueries.actorMovies}"></a><br/>
-	<a href="movieActors" th:text="#{advancedQueries.movieActors}"></a><br/>
-	<a href="directorMovies" th:text="#{advancedQueries.directorMovies}"></a><br/>
-	<a href="directorActors" th:text="#{advancedQueries.directorActors}"></a><br/>
-	<a href="actorDirectors" th:text="#{advancedQueries.actorDirectors}"></a><br/>
-
-	<a href="createActorMovie" th:text="#{advancedQueries.createActorMovie}"></a><br/>
-	<a href="createActorMovieTrans" th:text="#{advancedQueries.createActorMovieTrans}"></a><br/>
+	<div sec:authorize="hasAuthority('VIEW')">
+ 		<a href="actorMovies" th:text="#{advancedQueries.actorMovies}"></a><br/>
+		<a href="movieActors" th:text="#{advancedQueries.movieActors}"></a><br/>
+		<a href="directorMovies" th:text="#{advancedQueries.directorMovies}"></a><br/>
+		<a href="directorActors" th:text="#{advancedQueries.directorActors}"></a><br/>
+		<a href="actorDirectors" th:text="#{advancedQueries.actorDirectors}"></a><br/>
+	</div>
+	
+	<div sec:authorize="hasAuthority('VIEW')">
+		<a href="createActorMovie" th:text="#{advancedQueries.createActorMovie}"></a><br/>
+		<a href="createActorMovieTrans" th:text="#{advancedQueries.createActorMovieTrans}"></a><br/>
+	</div>
 	
 </body>
 </html>

@@ -11,29 +11,27 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dub.spring.entities.Actor;
-import com.dub.spring.entities.Director;
-import com.dub.spring.entities.DisplayMovie;
-import com.dub.spring.entities.Movie;
-import com.dub.spring.repositories.ActorRepository;
-import com.dub.spring.repositories.DirectorRepository;
-
+import com.dub.spring.actors.Actor;
+import com.dub.spring.actors.ActorDAO;
+import com.dub.spring.directors.Director;
+import com.dub.spring.directors.DirectorDAO;
+import com.dub.spring.movies.DisplayMovie;
+import com.dub.spring.movies.Movie;
 
 @Service
 public class DefaultAdvancedServices implements AdvancedServices {
 	
     private static final Logger log = LogManager.getLogger();
-	
+    
 	@Resource 
 	private AdvancedDAO advancedDAO;
 	
-	@Resource 
-	private ActorRepository actorRepository;
+	@Resource
+	private ActorDAO actorDAO;
 	
-	@Resource 
-	private DirectorRepository directorRepository;
+	@Resource
+	private DirectorDAO directorDAO;
 	
-
 	@Override
 	public List<DisplayMovie> getMoviesWithActor(String firstName, String lastName) {
 		List<Movie> movies = 
@@ -41,15 +39,17 @@ public class DefaultAdvancedServices implements AdvancedServices {
 		List<DisplayMovie> dmovies = new ArrayList<>();
 				
 		for (Movie movie : movies) {		
-			Director director = movie.getDirector();
+			Director director = 
+						directorDAO.getDirector(movie.getDirectorId());
+				
 			String name = director.getFirstName() + " " + director.getLastName();
 			DisplayMovie movieDisplay = new DisplayMovie(movie);
 			movieDisplay.setDirectorName(name);
 			dmovies.add(movieDisplay);			
-		}
+		}// for
 						
 		return dmovies;
-	}
+	}// getMoviesWithActor
 
 	@Override
 	public List<Actor> getActorsInMovie(String title, Date releaseDate) {
@@ -67,7 +67,7 @@ public class DefaultAdvancedServices implements AdvancedServices {
 			DisplayMovie movieDisplay = new DisplayMovie(movie);
 			movieDisplay.setDirectorName(name);
 			dmovies.add(movieDisplay);			
-		}
+		}// for
 						
 		return dmovies;
 	}
@@ -83,21 +83,25 @@ public class DefaultAdvancedServices implements AdvancedServices {
 	}
 
 	@Override
-	public void createActorFilm(long actorId, long movieId) {		
+	public void createActorFilm(Long actorId, Long movieId) {
 		advancedDAO.createActorFilm(actorId, movieId);
 	}
 
+	
+	/* transactional method */
 	@Override
 	@Transactional
 	public void createActorFilmSpecial(
-								Actor actor, String title,
-								Date releaseDate) 
+							Actor actor, 
+							String title, Date releaseDate)								
 	{	
-		actorRepository.save(actor);
+		/* step 1: create a new actor */			
+		actorDAO.add(actor);
 		log.info("transaction step 1 completed");
 		
+		/* step 2: insert a new row in actorFilm table */			
 		advancedDAO.createActorFilm(actor, title, releaseDate);
-		log.info("transaction step 2 completed");		
+		log.info("transaction step 2 completed");
 	}
 
 }

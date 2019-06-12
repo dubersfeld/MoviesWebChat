@@ -12,15 +12,15 @@ public class ActorPhotoMultiForm {
 	
 	@Min(value  = 1, message = "{validate.min.actorId}")
 	@NotNull(message = "{validate.required.actorId}")
-	private Integer actorId;
+	private long actorId;
 	
 	private MultipartFile uploadedFile;
 
-	public Integer getActorId() {
+	public long getActorId() {
 		return actorId;
 	}
 
-	public void setActorId(Integer actorId) {
+	public void setActorId(long actorId) {
 		this.actorId = actorId;
 	}
 

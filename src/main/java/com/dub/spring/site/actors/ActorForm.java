@@ -51,6 +51,4 @@ public class ActorForm {
 		this.birthDate = birthDate;
 	}
 	
-	
-
 }

@@ -3,10 +3,9 @@ package com.dub.spring.advanced;
 import java.util.Date;
 import java.util.List;
 
-import com.dub.spring.entities.Actor;
-import com.dub.spring.entities.Director;
-import com.dub.spring.entities.Movie;
-
+import com.dub.spring.actors.Actor;
+import com.dub.spring.directors.Director;
+import com.dub.spring.movies.Movie;
 
 public interface AdvancedDAO {
 	
@@ -20,8 +19,13 @@ public interface AdvancedDAO {
 
 	public List<Director> getDirectorsByActorName(String firstName, String lastName);
 
-	public void createActorFilm(long actorId, long movieId);
-	
+	public void createActorFilm(Long actorId, Long movieId);
+
+	//public void createActorFilm(String firstName, String lastName, String title, Date releaseDate);
+
 	public void createActorFilm(Actor actor, String title, Date releaseDate);
+
+
+
 
 }

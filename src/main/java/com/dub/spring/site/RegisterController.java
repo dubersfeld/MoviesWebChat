@@ -1,12 +1,13 @@
 package com.dub.spring.site;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import com.dub.spring.entities.UserAuthority;
 import com.dub.spring.entities.UserPrincipal;
 import com.dub.spring.exceptions.DuplicateUserException;
 import com.dub.spring.users.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,12 +25,11 @@ import java.util.Set;
 @Controller
 public class RegisterController {
 	
-	@Autowired 
-	private UserService userService;
+	@Autowired UserService userService;
 	
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@RequestMapping(value = "register", method = RequestMethod.GET)
 	public String register(ModelMap model) {
-		model.addAttribute("registerForm", new RegisterForm());
+		model.addAttribute("registerForm", new RegisterForm());		
 		return "register";
 	}
 	
@@ -44,7 +44,7 @@ public class RegisterController {
 			Set<UserAuthority> authorities = new HashSet<>();
 			authorities.add(new UserAuthority("VIEW"));
 			authorities.add(new UserAuthority("CHAT"));
-			
+					
 			String newPassword = form.getPassword();
 			principal.setAccountNonExpired(true);
 			principal.setAccountNonLocked(true);
@@ -79,8 +79,7 @@ public class RegisterController {
         private String password;
         
         public RegisterForm()
-        {
-        	
+        {	
         }
 
         public String getUsername()
@@ -104,4 +103,4 @@ public class RegisterController {
         }
     }
 	
-}
+}// class

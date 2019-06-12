@@ -18,17 +18,17 @@ public class MovieForm {
 	@Size(min = 1, message = "{validate.title.required}")
 	protected String title;
 	
-	@NotTooOld(message = "{validate.releaseDate.remote}")
+	//@NotTooOld(message = "{validate.releaseDate.remote}")
 	@DateTimeFormat(pattern="yyyy/MM/dd")
 	@NotNull(message = "{validate.releaseDate.required}")
 	protected Date releaseDate;
 	
 	@NotNull(message = "{validate.directorId.required}")
 	@Min(value  = 1, message = "{validate.min.directorId}")
-	protected Integer directorId;
+	protected long directorId;
 	
 	@NotNull(message = "{validate.runningTime.required}")
-	protected Integer runningTime;
+	protected int runningTime;
 	
 	
  
@@ -48,18 +48,18 @@ public class MovieForm {
 	}
 		  
 	
-	public Integer getDirectorId() {
+	public long getDirectorId() {
 		return directorId;
 	}
-	public void setDirectorId(Integer directorId) {
+	public void setDirectorId(long directorId) {
 		this.directorId = directorId;
 	}
 	
 	
-	public Integer getRunningTime() {
+	public int getRunningTime() {
 		return runningTime;
 	}
-	public void setRunningTime(Integer runningTime) {
+	public void setRunningTime(int runningTime) {
 		this.runningTime = runningTime;
 	}
 	

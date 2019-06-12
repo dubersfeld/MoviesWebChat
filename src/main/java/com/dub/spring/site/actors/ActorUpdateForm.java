@@ -10,7 +10,7 @@ import com.dub.spring.site.validation.NotTooOld;
 
 public class ActorUpdateForm {
 	
-	Integer id;
+	long id;
 	String firstName;
 	String lastName;
 	
@@ -46,11 +46,11 @@ public class ActorUpdateForm {
 		this.birthDate = birthDate;
 	}
 
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	

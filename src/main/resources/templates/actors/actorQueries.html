@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments/header::header(title='actorQueries')">
 </head>
@@ -9,26 +9,40 @@
 	
 	<a th:href="@{/backHome}" th:text="#{index.backHome}"></a><br /><br />
 	    
-    <a th:href="@{/allActors}" th:text="#{actorQueries.listAllActors}"></a><br />
-    <a th:href="@{/getActor}" th:text="#{actorQueries.getActor}"></a><br />
-    <a th:href="@{/numberOfActors}" th:text="#{actorQueries.numberOfActors}"></a><br />
-    <a th:href="@{/getActorByName}" th:text="#{actorQueries.getActorByName}"></a><br />
+	<div sec:authorize="hasAuthority('VIEW')">
+    	<a th:href="@{/allActors}" th:text="#{actorQueries.listAllActors}"></a><br />
+    	<a th:href="@{/getActor}" th:text="#{actorQueries.getActor}"></a><br />
+    	<a th:href="@{/numberOfActors}" th:text="#{actorQueries.numberOfActors}"></a><br />
+    	<a th:href="@{/getActorByName}" th:text="#{actorQueries.getActorByName}"></a><br />
+    </div>
     
- 	<a th:href="@{/createActor}" th:text="#{actorQueries.createActor}"></a><br />
-    
-    <a th:href="@{/updateActor}" th:text="#{actorQueries.updateActor}"></a><br />
+    <div sec:authorize="hasAuthority('CREATE')">
+ 		<a th:href="@{/createActor}" th:text="#{actorQueries.createActor}"></a><br />
+    </div>  	
+      	
+    <div sec:authorize="hasAuthority('UPDATE')">
+    	<a th:href="@{/updateActor}" th:text="#{actorQueries.updateActor}"></a><br />
+  	</div>
   	
-  	<a th:href="@{/deleteActor}" th:text="#{actorQueries.deleteActor}"></a><br />
-
+  	<div sec:authorize="hasAuthority('DELETE')">
+  		<a th:href="@{/deleteActor}" th:text="#{actorQueries.deleteActor}"></a><br />
+  	</div>
+  	
   	<br /><br />
   		
-	<a th:href="@{/createActorPhotoMulti}" th:text="#{actorQueries.createActorPhoto}"></a><br/>
+  	<div sec:authorize="hasAuthority('CREATE')">
+		<a th:href="@{/createActorPhotoMulti}" th:text="#{actorQueries.createActorPhoto}"></a><br/>
+	</div>
 	
-	<a th:href="@{/listAllActorsWithPhotos}" th:text="#{actorQueries.listAllActorsWithPhoto}"></a><br/>
-	<a th:href="@{/getAllPhotosByActor}" th:text="#{actorQueries.getAllPhotosByActor}"></a><br/>
-	<a th:href="@{/getActorWithPhotoByName}" th:text="#{actorQueries.getActorWithPhotoByName}"></a><br/>
+	<div sec:authorize="hasAuthority('VIEW')">
+		<a th:href="@{/listAllActorsWithPhotos}" th:text="#{actorQueries.listAllActorsWithPhoto}"></a><br/>
+		<a th:href="@{/getAllPhotosByActor}" th:text="#{actorQueries.getAllPhotosByActor}"></a><br/>
+		<a th:href="@{/getActorWithPhotoByName}" th:text="#{actorQueries.getActorWithPhotoByName}"></a><br/>
+	</div>
+	
+	<div sec:authorize="hasAuthority('DELETE')">
+		<a th:href="@{/deleteActorPhoto}" th:text="#{actorQueries.deleteActorPhoto}"></a><br/>
+	</div>
 
-	<a th:href="@{/deleteActorPhoto}" th:text="#{actorQueries.deleteActorPhoto}"></a><br/>
-	
 </body>
 </html>

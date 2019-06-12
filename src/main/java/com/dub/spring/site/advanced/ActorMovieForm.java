@@ -1,4 +1,4 @@
-package com.dub.spring.site.actors;
+package com.dub.spring.site.advanced;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -9,23 +9,23 @@ public class ActorMovieForm {
 	
 	@Min(value  = 1, message = "{validate.min.actorId}")
 	@NotNull(message = "{validate.required.actorId}")
-	private Integer actorId;
+	private long actorId;
 	
 	@Min(value  = 1, message = "{validate.min.directorId}")
 	@NotNull(message = "{validate.required.directorId}")
-	private Integer movieId;
+	private long movieId;
 	
 	
-	public Integer getActorId() {
+	public long getActorId() {
 		return actorId;
 	}
-	public void setActorId(Integer actorId) {
+	public void setActorId(long actorId) {
 		this.actorId = actorId;
 	}
-	public Integer getMovieId() {
+	public long getMovieId() {
 		return movieId;
 	}
-	public void setMovieId(Integer movieId) {
+	public void setMovieId(long movieId) {
 		this.movieId = movieId;
 	}
 		
