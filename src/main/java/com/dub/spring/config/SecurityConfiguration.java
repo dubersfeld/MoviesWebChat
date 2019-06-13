@@ -36,12 +36,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	@Value("${server.port}")
 	int port;
 	
+	@Value("${myhost}")
+	String host;
+	
     @Autowired 
     private UserService userService;
-         
-    //String loginUrl = "http://localhost:8080/movies-web/login";
-    String loginUrl = "http://localhost:" + port + contextPath + "/login";
-    
+           
     @Bean
     protected SessionRegistry sessionRegistryImpl() {
         return new SessionRegistryImpl();
@@ -61,14 +61,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		= new SimpleUrlAuthenticationSuccessHandler();	
 		
 		//handler.setDefaultTargetUrl("http://localhost:8080/movies-web/index");
-		handler.setDefaultTargetUrl("http://localhost:" + port + contextPath + "/index");
+		//handler.setDefaultTargetUrl("http://localhost:" + port + contextPath + "/index");
+		handler.setDefaultTargetUrl("http://" + host + ":" + port + contextPath + "/index");
 		
 		return handler;
 	}
 	
 	@Bean
 	public AuthenticationEntryPoint myAuthenticationEntryPoint() {
-		return new LoginUrlAuthenticationEntryPoint(loginUrl);	
+		return new LoginUrlAuthenticationEntryPoint("http://" + host + ":" + port + contextPath + "/login");	
 	}
     
   
@@ -128,7 +129,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                                         "DELETE".equals(m) || "PATCH".equals(m));
                     });
         
-        //security.addFilterAfter(new RedirectFilter(), 
-		//		LogoutFilter.class);
     }
 }

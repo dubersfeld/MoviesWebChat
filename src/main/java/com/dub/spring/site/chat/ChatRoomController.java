@@ -16,8 +16,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -33,8 +31,8 @@ import com.dub.spring.exceptions.ChatRoomNotFoundException;
 
 @Controller
 @RequestMapping("/chatRoom")
-public class ChatRoomController
-{
+public class ChatRoomController {
+	
     private static final Logger log = LogManager.getLogger();
     
     @Value("${myapp.chatroom.url}")
@@ -92,13 +90,11 @@ public class ChatRoomController
      
     @MessageMapping("/chat/{chatRoomId}") // like a request mapping with @DestinationVariable instead of @PathVariable
 	@SendTo("/topic/messages/{chatRoomId}") // destination URL
-	public OutputMessage send(@DestinationVariable("chatRoomId") int chatRoomId, MyMessage message, 
+	public ChatMessage send(@DestinationVariable("chatRoomId") int chatRoomId, ChatMessage message, 
 											StompHeaderAccessor sha) throws Exception {
-	    
-		String time = new SimpleDateFormat("HH:mm").format(new Date());
-			
-		return new OutputMessage(message.getFrom(), message.getText(), time, 
-	    														OutputMessage.Code.NORMAL);
+	    			
+    	return message;
+    	
 	}
     
    

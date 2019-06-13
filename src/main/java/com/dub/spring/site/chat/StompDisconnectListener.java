@@ -39,8 +39,8 @@ public class StompDisconnectListener implements ApplicationListener<SessionDisco
         	// send disconnect notification to all chat group subscribers 
         	if (connectedUsers.containsKey(sessionId)) {
         		String username = connectedUsers.get(sessionId);
-        		OutputMessage discMessage 
-        		 			= new OutputMessage(username, "", time, OutputMessage.Code.LEFT );
+        		ChatMessage discMessage 
+        		 			= new ChatMessage(username, "", time, ChatMessage.Code.LEFT);
         	       
         		// remove subscriber username
         		connectedUsers.remove(sessionId);

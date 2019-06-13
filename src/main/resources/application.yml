@@ -23,16 +23,16 @@ spring:
 photoTempDir: "/home/ubersfeld/Pictures/tmp/"
 
 
-myhost: localhost
-#myhost: www.dominique-ubersfeld.com
+#myhost: localhost
+myhost: www.dominique-ubersfeld.com
 
 myapp:
   chatroom:
-    url: "http://localhost:8080/movies-web/chat" 
-    #url: "http://www.dominique-ubersfeld.com:8080/movies-web/chat"        
+    #url: "http://localhost:8080/movies-web/chat" 
+    url: "http://www.dominique-ubersfeld.com:8080/movies-web/chat"        
   allowed:
-    origins: "http://localhost:8080"
-    #origins: "http://www.dominique-ubersfeld.com:8080"
+    #origins: "http://localhost:8080"
+    origins: "http://www.dominique-ubersfeld.com:8080"
 
 
     

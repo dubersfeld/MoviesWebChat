@@ -51,34 +51,36 @@
     		console.log('chatURL ' + chatURL);
     	});
 	}
-             
-            function disconnect() {
-                if(stompClient != null) {
-                    stompClient.disconnect();
-                }
-                setConnected(false);
-                console.log("Disconnected");
-            }
-            
-             
-            function sendMessage() {
-            	var from = $("#from").get(0).value;
-                var text = $("#text").get(0).value;
-                console.log("from: " + from);
-                console.log("text: " + text);
-                console.log("chatURL: " + chatURL);
-                if (text.trim().length > 0) {
-                stompClient.send(chatURL, {}, 
-                  JSON.stringify({'from':from, 'text':text}));
-            	}
-            }
-             
-          
-            function showMessageOutput(messageOutput) {
-                var response = $("#response").get(0);
+                     
+	function disconnect() {        
+		if(stompClient != null) {
+        	stompClient.disconnect();        
+		}
+ 		setConnected(false);
+  		console.log("Disconnected");        
+	}
+                     
+	function sendMessage() {
+    	var from = $("#from").get(0).value;
+     	var text = $("#text").get(0).value;
+     	var code = "NORMAL";
+     	var now = new Date();
+     	var time = now.getHours() + ":" + now.getMinutes();
+    	console.log("from: " + from);
+    	console.log("text: " + text);
+    	console.log("code: " + code);
+   		console.log("chatURL: " + chatURL);
+      	if (text.trim().length > 0) {
+        	stompClient.send(chatURL, {}, 
+        	JSON.stringify({'from':from, 'text':text, 'code':code, 'time': time}));
+    	}        
+	}
+                     
+	function showMessageOutput(messageOutput) {
+    	var response = $("#response").get(0);
                     
-                switch (messageOutput.code) {
-                	case 'JOINED':
+   		switch (messageOutput.code) {
+        	case 'JOINED':
                 	var msg = messageOutput.from + " " + /*[[#{chat.joined}]]*/
                             + " (" + messageOutput.time + ")";
                 	$('<p></p>').text(msg).css("color", "Blue").appendTo(response);

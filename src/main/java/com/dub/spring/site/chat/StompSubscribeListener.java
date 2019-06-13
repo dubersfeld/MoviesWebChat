@@ -39,8 +39,8 @@ public class StompSubscribeListener
          
         String time = new SimpleDateFormat("HH:mm").format(new Date());
     	
-        OutputMessage connMessage 
-			= new OutputMessage(username, "", time, OutputMessage.Code.JOINED);
+        ChatMessage connMessage 
+			= new ChatMessage(username, "", time, ChatMessage.Code.JOINED);
         
         String[] parts = destination.split("/");
         String chatRoomId = parts[3];
